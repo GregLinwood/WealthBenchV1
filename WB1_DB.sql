@@ -19,6 +19,7 @@ drop procedure if exists [int].[Deposit]
 drop procedure if exists [ext].[Withdrawal]
 drop procedure if exists [int].[Withdrawal]
 drop procedure if exists [mon].[GetProgressBars]
+drop procedure if exists [mon].[ResetProgressBars]
 drop procedure if exists [mon].[ThreadIncrementTimeUs]
 drop procedure if exists [mon].[AcctRebalCount]
 drop procedure if exists [mon].[FundRebalCount]
@@ -1350,5 +1351,6 @@ End
 go
 
 use master
+
 
 
