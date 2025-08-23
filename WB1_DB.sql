@@ -18,11 +18,6 @@ drop procedure if exists [ext].[Deposit]
 drop procedure if exists [int].[Deposit]
 drop procedure if exists [ext].[Withdrawal]
 drop procedure if exists [int].[Withdrawal]
-drop procedure if exists [mon].[GetProgressBars]
-drop procedure if exists [mon].[ResetProgressBars]
-drop procedure if exists [mon].[ThreadIncrementTimeUs]
-drop procedure if exists [mon].[AcctRebalCount]
-drop procedure if exists [mon].[FundRebalCount]
 drop procedure if exists [load].[WorkerThreads]
 drop procedure if exists [load].[Investors]
 drop procedure if exists [load].[ModelAssets]
@@ -30,6 +25,11 @@ drop procedure if exists [load].[Models]
 drop procedure if exists [load].[Advisors]
 drop procedure if exists [load].[Assets]
 drop procedure if exists [load].[DeleteAllData]
+drop procedure if exists [mon].[GetProgressBars]
+drop procedure if exists [mon].[ResetProgressBars]
+drop procedure if exists [mon].[ThreadIncrementTimeUs]
+drop procedure if exists [mon].[AcctRebalCount]
+drop procedure if exists [mon].[FundRebalCount]
 
 /* Drop Table Types */
 drop type if exists dbo.Holdings
@@ -1351,6 +1351,7 @@ End
 go
 
 use master
+
 
 
 
