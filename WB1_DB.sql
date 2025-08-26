@@ -1147,6 +1147,8 @@ create table Thread.Monitor (
  , WithdrawalTimeUs bigint not null
  , PriceUpdateCount bigint not null
  , PriceUpdateTimeUs bigint not null
+ , GetNextAcctCount bigint not null
+ , GetNextAcctTimeUs bigint not null
  '
 if @inmemtbl = 1 select @s += N' 
  , constraint pk_ThreadMonitor primary key nonclustered (Fund_id, ThreadId)
@@ -1351,6 +1353,7 @@ End
 go
 
 use master
+
 
 
 
