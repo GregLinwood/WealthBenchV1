@@ -1027,12 +1027,12 @@ if @fks = 1 select @s += N'
 if @inmemtbl = 1 select @s += N' 
  , constraint pk_InvestorCorporateAction primary key nonclustered (Fund_id, Accnt_id, CorpAct_id)
  , index ix_InvestorCorporateAction_01               nonclustered (Fund_id, Accnt_id, Rebal_id, CorpAct_type, CorpAct_id)
- , index ix_InvestorCorporateAction_02               nonclustered (Fund_id, Accnt_id, Rebal_id, CorpAct_type)
+ , index ix_InvestorCorporateAction_02               nonclustered (Fund_id, Accnt_id, Rebal_id, CorpAct_type, Inc_dt)
 )  with (memory_optimized = on'+@dur+N') '
 else select @s += N'
  , constraint pk_InvestorCorporateAction primary key nonclustered (Fund_id, Accnt_id, CorpAct_id)
  , index ix_InvestorCorporateAction_CorpAct_id       nonclustered (Fund_id, Accnt_id, Rebal_id, CorpAct_type, CorpAct_id)
- , index ix_InvestorCorporateAction_02               nonclustered (Fund_id, Accnt_id, Rebal_id, CorpAct_type)
+ , index ix_InvestorCorporateAction_02               nonclustered (Fund_id, Accnt_id, Rebal_id, CorpAct_type, Inc_dt)
 ) '
 exec(@s)
 
@@ -1353,6 +1353,7 @@ End
 go
 
 use master
+
 
 
 
