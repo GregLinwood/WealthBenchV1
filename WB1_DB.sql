@@ -37,6 +37,7 @@ drop type if exists dbo.RebalanceAsset
 drop type if exists dbo.FundVsAccntsHolding
 drop type if exists dbo.ChartCountIntKey
 drop type if exists [load].[ModelRandomizer]
+drop type if exists dbo.AccntQueue
 
 /* Drop Tables */
 drop table if exists Logging.GainUnrealised
@@ -142,6 +143,17 @@ if @inmemtbldurable = 0 select @dur = N', durability = SCHEMA_ONLY' else select 
 
 Begin /* Table Types */
 print 'Table Types'
+
+/* dbo.AccntQueue */
+select @s = N'
+create type dbo.AccntQueue as table (
+   Queue_No integer not null
+ , Accnt_id integer not null'
+if @inmemtyp = 1 select @s += N' , primary key nonclustered (Queue_No)
+)  with (memory_optimized = on) '
+else select @s += N' , primary key clustered (Queue_No)
+) '
+exec(@s)
 
 /* dbo.Holdings */
 select @s = N'
@@ -1353,6 +1365,7 @@ End
 go
 
 use master
+
 
 
 
