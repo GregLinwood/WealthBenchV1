@@ -172,7 +172,8 @@ exec(@s)
 /* dbo.RebalanceAsset */
 select @s = N'
 create type dbo.RebalanceAsset as table (
-   Asset_id integer not null
+   Id integer not null identity (1, 1)
+ , Asset_id integer not null
  , Exch_id smallint not null
  , Curr_id tinyint not null
  , Price decimal(10, 2) not null
@@ -182,10 +183,10 @@ create type dbo.RebalanceAsset as table (
  , IsSell tinyint not null
 '
 if @inmemtyp = 1 select @s += N' 
- , primary key nonclustered (Asset_id)
+ , primary key nonclustered (Id)
 )  with (memory_optimized = on) '
 else select @s += N'
- , primary key nonclustered (Asset_id)
+ , primary key nonclustered (Id)
 ) '
 exec(@s)
 
@@ -1362,6 +1363,7 @@ End
 go
 
 use master
+
 
 
 
