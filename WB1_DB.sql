@@ -185,8 +185,8 @@ create type dbo.RebalanceAsset as table (
 if @inmemtyp = 1 select @s += N' 
  , primary key nonclustered (Asset_id)
  --, index ncix_RebalanceAsset_IsTrade nonclustered (Asset_id, Exch_id, Curr_id, IsTrade)
- , index ncix_RebalanceAsset_IsBuy nonclustered   (Asset_id, Exch_id, Curr_id, IsBuy)
- , index ncix_RebalanceAsset_IsSell nonclustered  (Asset_id, Exch_id, Curr_id, IsSell)
+ --, index ncix_RebalanceAsset_IsBuy nonclustered   (Asset_id, Exch_id, Curr_id, IsBuy)
+ --, index ncix_RebalanceAsset_IsSell nonclustered  (Asset_id, Exch_id, Curr_id, IsSell)
 )  with (memory_optimized = on) '
 else select @s += N'
  , primary key nonclustered (Asset_id)
@@ -1366,6 +1366,7 @@ End
 go
 
 use master
+
 
 
 
