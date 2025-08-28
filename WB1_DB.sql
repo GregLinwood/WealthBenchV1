@@ -180,7 +180,8 @@ create type dbo.RebalanceAsset as table (
  , Units_target decimal(18, 2) not null
  , IsBuy tinyint null
  , IsSell tinyint null
- , IsTrade tinyint null'
+ --, IsTrade tinyint null
+'
 if @inmemtyp = 1 select @s += N' 
  , primary key nonclustered (Asset_id)
  --, index ncix_RebalanceAsset_IsTrade nonclustered (Asset_id, Exch_id, Curr_id, IsTrade)
@@ -1365,6 +1366,7 @@ End
 go
 
 use master
+
 
 
 
