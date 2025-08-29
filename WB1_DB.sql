@@ -179,8 +179,8 @@ create type dbo.RebalanceAsset as table (
  , Price decimal(10, 2) not null
  , Units_current decimal(18, 2) not null
  , Units_target decimal(18, 2) not null
- , IsBuy tinyint not null
- , IsSell tinyint not null
+ --, IsBuy tinyint not null
+ --, IsSell tinyint not null
 '
 if @inmemtyp = 1 select @s += N' 
  , primary key nonclustered (Id)
@@ -1363,6 +1363,7 @@ End
 go
 
 use master
+
 
 
 
