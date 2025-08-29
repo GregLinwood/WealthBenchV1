@@ -37,7 +37,6 @@ drop type if exists dbo.RebalanceAsset
 drop type if exists dbo.FundVsAccntsHolding
 drop type if exists dbo.ChartCountIntKey
 drop type if exists [load].[ModelRandomizer]
-drop type if exists dbo.AccntQueue
 
 /* Drop Tables */
 drop table if exists Logging.GainUnrealised
@@ -57,6 +56,7 @@ drop table if exists Investor.Transact
 drop table if exists Investor.GainUnrealised
 drop table if exists Investor.GainRealised
 drop table if exists Investor.Trade
+drop table if exists Investor.AccountRebalanceDetail
 drop table if exists Investor.AccountRebalance
 drop table if exists Investor.Balance
 drop table if exists Investor.AccountSeq
@@ -143,17 +143,6 @@ if @inmemtbldurable = 0 select @dur = N', durability = SCHEMA_ONLY' else select 
 
 Begin /* Table Types */
 print 'Table Types'
-
-/* dbo.AccntQueue */
-select @s = N'
-create type dbo.AccntQueue as table (
-   Queue_No integer not null
- , Accnt_id integer not null'
-if @inmemtyp = 1 select @s += N' , primary key nonclustered (Queue_No)
-)  with (memory_optimized = on) '
-else select @s += N' , primary key clustered (Queue_No)
-) '
-exec(@s)
 
 /* dbo.Holdings */
 select @s = N'
@@ -831,6 +820,22 @@ create table Investor.AccountRebalance (
    Fund_id smallint not null
  , Rebal_id integer not null
  , Accnt_id integer not null
+ , Rebal_dt datetime2(6) not null
+'
+if @inmemtbl = 1 select @s += N' 
+ , constraint pk_InvestorAccountRebalance primary key nonclustered (Fund_id, Rebal_id, Accnt_id)
+)  with (memory_optimized = on'+@dur+N') '
+else select @s += N'
+ , constraint pk_InvestorAccountRebalance primary key clustered (Fund_id, Rebal_id, Accnt_id)
+) '
+exec(@s)
+
+/* Investor.AccountRebalanceDetail */
+select @s = N'
+create table Investor.AccountRebalanceDetail (
+   Fund_id smallint not null
+ , Rebal_id integer not null
+ , Accnt_id integer not null
  , Curr_id tinyint not null
  , Rebal_dt datetime2(6) not null
  , Model_id smallint not null
@@ -854,10 +859,10 @@ create table Investor.AccountRebalance (
  , SellTranId integer null
  , FeeTranId integer null'
 if @inmemtbl = 1 select @s += N' 
- , constraint pk_InvestorAccountRebalance primary key nonclustered (Fund_id, Rebal_id, Accnt_id)
-)  with (memory_optimized = on, durability = SCHEMA_ONLY) '
+ , constraint pk_InvestorAccountRebalanceDetail primary key nonclustered (Fund_id, Rebal_id, Accnt_id)
+)  with (memory_optimized = on'+@dur+N') '
 else select @s += N'
- , constraint pk_InvestorAccountRebalance primary key clustered (Fund_id, Rebal_id, Accnt_id)
+ , constraint pk_InvestorAccountRebalanceDetail primary key clustered (Fund_id, Rebal_id, Accnt_id)
 ) '
 exec(@s)
 
@@ -1363,6 +1368,7 @@ End
 go
 
 use master
+
 
 
 
