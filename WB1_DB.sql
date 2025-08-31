@@ -168,8 +168,9 @@ create type dbo.ModelTrade as table (
  , Curr_id tinyint not null
  , Price decimal(10, 2) not null
  , Units_current decimal(18, 2) not null
- , Units_target decimal(18, 2) not null
-'
+ , Units_model decimal(18, 2) not null
+ , Units decimal(18, 2) not null
+	'
 if @inmemtyp = 1 select @s += N' 
  , primary key nonclustered (Id)
 )  with (memory_optimized = on) '
@@ -1367,6 +1368,7 @@ End
 go
 
 use master
+
 
 
 
