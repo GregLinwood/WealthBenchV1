@@ -33,6 +33,7 @@ drop procedure if exists [mon].[FundRebalCount]
 
 /* Drop Table Types */
 drop type if exists dbo.Holdings
+drop type if exists dbo.ModelTrade
 drop type if exists dbo.RebalanceAsset
 drop type if exists dbo.FundVsAccntsHolding
 drop type if exists dbo.ChartCountIntKey
@@ -158,9 +159,9 @@ else select @s += N' , primary key clustered (Asset_id)
 ) '
 exec(@s)
 
-/* dbo.RebalanceAsset */
+/* dbo.ModelTrade */
 select @s = N'
-create type dbo.RebalanceAsset as table (
+create type dbo.ModelTrade as table (
    Id integer not null identity (1, 1)
  , Asset_id integer not null
  , Exch_id smallint not null
@@ -168,8 +169,6 @@ create type dbo.RebalanceAsset as table (
  , Price decimal(10, 2) not null
  , Units_current decimal(18, 2) not null
  , Units_target decimal(18, 2) not null
- --, IsBuy tinyint not null
- --, IsSell tinyint not null
 '
 if @inmemtyp = 1 select @s += N' 
  , primary key nonclustered (Id)
@@ -182,7 +181,7 @@ exec(@s)
 /* dbo.FundVsAccntsHolding */
 select @s = N'
 create type dbo.FundVsAccntsHolding as table (
-Id integer not null identity(1, 1)
+   Id integer not null identity(1, 1)
  , Asset_id_Fund integer not null
  , Exch_id_Fund smallint not null
  , Units_Fund decimal(18, 2) not null
@@ -841,13 +840,13 @@ create table Investor.AccountRebalanceDetail (
  , Model_id smallint not null
  , Sql_Process_id smallint null
  , ThreadId smallint not null
- , CurrentCashBalance decimal(20, 2) null
+ , CashBalance decimal(20, 2) null
  , NewDeposits decimal(20, 2) null
  , NewWithdrawals decimal(20, 2) null
- , CurrentHoldingsValue decimal(20, 2) null
+ , HoldingsValue decimal(20, 2) null
  , MinimumBalance decimal(20, 2) null
- , TargetHoldingsValue decimal(20, 2) null
- , RebalancedHoldingsValue decimal(20, 2) null
+ , PortfolioValue decimal(20, 2) null
+ , InvestableValue decimal(20, 2) null
  , SumOfBuys decimal(20, 2) null
  , SumOfSells decimal(20, 2) null
  , NoOfBuys integer null
@@ -1368,6 +1367,7 @@ End
 go
 
 use master
+
 
 
 
